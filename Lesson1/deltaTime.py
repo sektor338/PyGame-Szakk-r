@@ -27,7 +27,7 @@ while running:
     if keys[pygame.K_d]:
         player_pos.x += 300 * dt
 
-    pygame.display.flip()
+    pygame.display.update()
 
     # korlátozás 60 FPS-re
     # dt az a "delta time"
