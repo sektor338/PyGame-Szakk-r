@@ -13,4 +13,7 @@ while running:
             running = False
     pygame.display.update()
 
+    # display surface > game window
+    # regular surface > image (imported, rendered text, plain color) > put on display surface
+
 pygame.quit()

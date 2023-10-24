@@ -33,4 +33,7 @@ while running:
     # dt az a "delta time"
     dt = clock.tick(60) / 1000
 
+    # 1 fps > 10px/s * 1 fps > 10px/s
+    # 100 fps > 10px/s * 100 fps > 1000px/s
+
 pygame.quit()
