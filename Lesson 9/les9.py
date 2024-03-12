@@ -1,8 +1,6 @@
 import pygame
 import random
 
-
-
 pygame.init()
 clock = pygame.time.Clock()
 dt = 0
@@ -22,6 +20,8 @@ bilding_rect = bilding.get_rect(midbottom=(SCREEN.get_width(), 550))
 
 ground = pygame.transform.scale_by(pygame.image.load("../images/ground.png").convert_alpha(), 1.8)
 ground_rect = ground.get_rect(bottomleft=(0, 850))
+ground_rect2 = ground.get_rect(bottomleft=(SCREEN.get_width(), 850))
+print(ground.get_width())
 
 plane = pygame.image.load("../images/de.png").convert_alpha()
 
@@ -40,13 +40,16 @@ while running:
 
     if GAME_ACTIVE:
         if keys[pygame.K_w]:
-            plane_rect.y -= 300 * dt
+            if plane_rect.y >= 0:
+                plane_rect.y -= 300 * dt
         if keys[pygame.K_a]:
-            plane_rect.x -= 300 * dt
+            if plane_rect.x >= 0:
+                plane_rect.x -= 300 * dt
         if keys[pygame.K_s]:
             plane_rect.y += 300 * dt
         if keys[pygame.K_d]:
-            plane_rect.x += 300 * dt
+            if plane_rect.x != SCREEN.get_width():
+                plane_rect.x += 300 * dt
     else:
         if keys[pygame.K_SPACE]:
             GAME_ACTIVE = True
@@ -57,6 +60,7 @@ while running:
     if GAME_ACTIVE:
         SCREEN.fill(BETTER_BLUE)
         SCREEN.blit(ground, ground_rect)
+        SCREEN.blit(ground, ground_rect2)
         SCREEN.blit(bilding, bilding_rect)
         SCREEN.blit(plane, plane_rect)
         SCREEN.blit(fighter, fighter_rect)
@@ -65,7 +69,14 @@ while running:
             plane_rect.x = -100
 
         bilding_rect.x -= 400 * dt
+        ground_rect.x -= 400 * dt
+        ground_rect2.x -= 400 * dt
         fighter_rect.x -= 650 * dt
+
+        if ground_rect.x < -1280:
+            ground_rect.x = SCREEN.get_width()
+        if ground_rect2.x < -1280:
+            ground_rect2.x = SCREEN.get_width()
 
         if bilding_rect.x < -50:
             bilding_rect.x = SCREEN.get_width()
@@ -76,6 +87,10 @@ while running:
         if plane_rect.colliderect(fighter_rect):
             GAME_ACTIVE = False
         if plane_rect.colliderect(bilding_rect):
+            GAME_ACTIVE = False
+        if plane_rect.colliderect(ground_rect):
+            GAME_ACTIVE = False
+        if plane_rect.colliderect(ground_rect2):
             GAME_ACTIVE = False
     else:
         SCREEN.fill("red")
