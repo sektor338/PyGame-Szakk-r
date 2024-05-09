@@ -67,5 +67,53 @@ def game_loop():
                     if event.key == pygame.K_r:
                         game_loop()
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                game_over = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    snake_x_change = -SNAKE_BLOCK_SIZE
+                    snake_y_change = 0
+                elif event.key == pygame.K_RIGHT:
+                    snake_x_change = SNAKE_BLOCK_SIZE
+                    snake_y_change = 0
+                elif event.key == pygame.K_UP:
+                    snake_x_change = 0
+                    snake_y_change = -SNAKE_BLOCK_SIZE
+                elif event.key == pygame.K_DOWN:
+                    snake_x_change = 0
+                    snake_y_change = SNAKE_BLOCK_SIZE
+
+        if snake_x >= DISPLAY_WIDTH or snake_x < 0 or snake_y >= DISPLAY_HEIGHT or snake_y < 0:
+            game_close = True
+
+        snake_x += snake_x_change
+        snake_y += snake_y_change
+        display.fill(CLR_BLACK)
+
+        pygame.draw.rect(display, CLR_RED, [food_x, food_y, SNAKE_BLOCK_SIZE, SNAKE_BLOCK_SIZE])
+        snake_head = []
+        snake_head.append(snake_x)
+        snake_head.append(snake_y)
+        snake_body.append(snake_head)
+        if len(snake_body) > snake_length:
+            del snake_body[0]
+
+        for block in snake_body[:-1]:
+            if block == snake_head:
+                game_close = True
+
+        draw_snake(SNAKE_BLOCK_SIZE, snake_body)
+        display_score(snake_length - 1)
+        pygame.display.update()
+        if snake_x == food_x and snake_y == food_y:
+            snake_length += 1
+            food_x = round(random.randrange(0, DISPLAY_WIDTH - SNAKE_BLOCK_SIZE) / 10) * 10
+            food_y = round(random.randrange(0, DISPLAY_HEIGHT - SNAKE_BLOCK_SIZE) / 10) * 10
+        clock.tick(SNAKE_SPEED)
+
+    pygame.quit()
+    quit()
 
 
+game_loop()
