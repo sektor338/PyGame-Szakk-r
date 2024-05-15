@@ -74,6 +74,8 @@ while running:
             bilding_rect.x = SCREEN.get_width()
             plane_rect = plane.get_rect(midbottom=(100, 300))
             fighter_rect = plane.get_rect(midbottom=(SCREEN.get_width(), 300))
+        elif keys[pygame.K_q]:
+            running = False
     if GAME_ACTIVE:
         SCREEN.fill(BETTER_BLUE)
         SCREEN.blit(ground, ground_rect)
