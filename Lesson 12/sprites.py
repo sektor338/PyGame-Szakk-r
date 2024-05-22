@@ -1,106 +1,42 @@
 import pygame
 import random
 
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
-
 
 class Block(pygame.sprite.Sprite):
-    def __init__(self, color):
-        super().__init__()
-
-        self.image = pygame.Surface([20, 20])
-        self.image.fill(color)
-        self.rect = self.image.get_rect()
-    def update(self):
-        self.rect.y += 1
+    pass
 
 
-class Player(pygame.sprite.Sprite):
-    def __init__(self, color):
-        super().__init__()
+class Car():
+    def __init__(self, kerekmeret, color):
+        self.kerekmeret = kerekmeret
+        self.color = color
 
-        self.image = pygame.Surface([20,20])
-        self.image.fill(color)
-        self.rect = self.image.get_rect()
-    def update(self):
-        pos = pygame.mouse.get_pos()
-        self.rect.x = pos[0]
-
-class Bullet(pygame.sprite.Sprite):
-    def __init__(self, color):
-        super().__init__()
-
-        self.image = pygame.Surface([4, 10])
-        self.image.fill(color)
-        self.rect = self.image.get_rect()
-
-    def update(self):
-        self.rect.y -= 3
+    def nulla_km(self):
+        return "A km ora allasa 0 lett."
 
 
+car1 = Car(19, "black")
 
-pygame.init()
+print(car1.color)
+print(car1.kerekmeret)
 
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 600
-SCREEN = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
-
-all_sprites_list = pygame.sprite.Group()
-
-block_list = pygame.sprite.Group()
-bullet_list = pygame.sprite.Group()
+print(car1.nulla_km())
 
 
-for i in range(50):
-    block = Block(BLUE)
-    block.rect.x = random.randrange(SCREEN_WIDTH)
-    block.rect.y = random.randrange(300)
-    block_list.add(block)
-    all_sprites_list.add(block)
+class MilitaryCar(Car):
+    def __init__(self, kerekmeret, color, bulletsize):
+        super().__init__(kerekmeret, color)
+        self.bulletsize = bulletsize
 
-player = Player("green")
-all_sprites_list.add(player)
+    def loves(self):
+        return "Loves megtortent"
 
 
-done = False
-
-clock = pygame.time.Clock()
-score = 0
-player.rect.y = 580
+militaryCar1 = MilitaryCar(19, "zold", 88)
 
 
-while not done:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            bullet = Bullet(RED)
-            bullet.rect.x = player.rect.x
-            bullet.rect.y = player.rect.y
-            all_sprites_list.add(bullet)
-            bullet_list.add(bullet)
+print(militaryCar1.color)
+print(militaryCar1.kerekmeret)
+print(militaryCar1.bulletsize)
 
-
-    all_sprites_list.update()
-
-    for bullet in bullet_list:
-        block_hit_list = pygame.sprite.spritecollide(bullet, block_list, True)
-        for block in block_hit_list:
-            bullet_list.remove(bullet)
-            all_sprites_list.remove(bullet)
-            score += 1
-            print(score)
-
-        if bullet.rect.y < -10:
-            bullet_list.remove(bullet)
-            all_sprites_list.remove(bullet)
-
-    SCREEN.fill(WHITE)
-    all_sprites_list.draw(SCREEN)
-    pygame.display.flip()
-    clock.tick(60)
-
-pygame.quit()
+print(militaryCar1.loves())
